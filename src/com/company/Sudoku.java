@@ -12,21 +12,29 @@ public class Sudoku {
         System.arraycopy(sq, 0, square, 0, sudokuBaseSize * sudokuBaseSize);
     }
 
-    public void solve() {
-        solveR(0);
+    public boolean solve() {
+        return solveR(0);
     }
 
-    private void solveR(int n) {
-        if(n == sudokuSize * sudokuSize) return;
+    private boolean solveR(int n) {
+        System.out.println(n);
+        printSquare();
+        if(n == sudokuSize * sudokuSize) return true;
 
         int x = n % sudokuSize;
         int y = n / sudokuSize;
 
         if(isCellFree(x, y)) {
+            for (int i = 1; i <= sudokuSize; i++) {
+                if(isSymbolValidToPlacementOnXY(i, x, y)) {
+                    square[y][x] = i;
+                    if(solveR(n + 1)) return true;
+                }
+            }
+        } else return solveR(n + 1);
 
-        }
-        else
-            solveR(n + 1);
+        square[y][x] = 0;
+        return false;
     }
 
     private boolean isCellFree(int x, int y) {
@@ -50,7 +58,7 @@ public class Sudoku {
         // Проверяем строку, столбец и малый квадрат
         for(int i = 0; i < sudokuSize; i++) {
             if(square[y][i] == symbol || square[i][x] == symbol ||
-               square[x - x % sudokuBaseSize + i % sudokuBaseSize][y - y % sudokuBaseSize + i / sudokuBaseSize] == symbol)
+               square[y - y % sudokuBaseSize + i / sudokuBaseSize][x - x % sudokuBaseSize + i % sudokuBaseSize] == symbol)
                 return false;
         }
         return true;

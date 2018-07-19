@@ -32,6 +32,8 @@ public class Main {
         Sudoku sudoku = new Sudoku(sudokuSquare);
 
         sudoku.printSquare();
-        System.out.println(sudoku.isSymbolValidToPlacementOnXY(5, 1, 1));
+        //System.out.println(sudoku.isSymbolValidToPlacementOnXY(5, 1, 1));
+        System.out.println(sudoku.solve());
+        sudoku.printSquare();
     }
 }
