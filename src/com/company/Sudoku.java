@@ -13,18 +13,19 @@ public class Sudoku {
     }
 
     public boolean solve() {
-        return solveR(0);
+        long startTime = System.currentTimeMillis();
+        boolean result = solveR(0);
+        System.out.println(System.currentTimeMillis() - startTime);
+        return result;
     }
 
     private boolean solveR(int n) {
-        System.out.println(n);
-        printSquare();
         if(n == sudokuSize * sudokuSize) return true;
 
         int x = n % sudokuSize;
         int y = n / sudokuSize;
 
-        if(isCellFree(x, y)) {
+        if(square[y][x] == 0) {
             for (int i = 1; i <= sudokuSize; i++) {
                 if(isSymbolValidToPlacementOnXY(i, x, y)) {
                     square[y][x] = i;
@@ -34,11 +35,6 @@ public class Sudoku {
         } else return solveR(n + 1);
 
         square[y][x] = 0;
-        return false;
-    }
-
-    private boolean isCellFree(int x, int y) {
-        if(square[y][x] == 0) return true;
         return false;
     }
 
@@ -52,9 +48,6 @@ public class Sudoku {
     }
 
     boolean isSymbolValidToPlacementOnXY(int symbol, int x, int y){
-        // Проверяем, что место свободно
-        if(square[y][x] != 0) return false;
-
         // Проверяем строку, столбец и малый квадрат
         for(int i = 0; i < sudokuSize; i++) {
             if(square[y][i] == symbol || square[i][x] == symbol ||
